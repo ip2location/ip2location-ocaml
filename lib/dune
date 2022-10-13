@@ -1,0 +1,4 @@
+(library
+ (public_name ip2location)
+ (name ip2location)
+ (libraries stdint ipaddr str lwt cohttp cohttp-lwt-unix yojson))

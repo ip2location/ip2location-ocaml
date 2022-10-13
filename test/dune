@@ -1,0 +1,3 @@
+(test
+ (name ip2locationtest)
+ (libraries ip2location))
