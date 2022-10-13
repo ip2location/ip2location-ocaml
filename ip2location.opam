@@ -14,6 +14,13 @@ bug-reports: "https://github.com/ip2location/ip2location-ocaml/issues"
 depends: [
   "ocaml"
   "dune" {>= "3.4"}
+  "stdint"
+  "ipaddr"
+  "str"
+  "lwt"
+  "cohttp"
+  "cohttp-lwt-unix"
+  "yojson"
   "odoc" {with-doc}
 ]
 build: [
