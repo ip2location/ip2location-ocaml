@@ -16,7 +16,6 @@ depends: [
   "dune" {>= "3.4"}
   "stdint"
   "ipaddr"
-  "str"
   "lwt"
   "cohttp"
   "cohttp-lwt-unix"
