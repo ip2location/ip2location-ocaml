@@ -2,6 +2,7 @@ open Stdint
 open Lwt
 open Cohttp
 open Cohttp_lwt_unix
+open Yojson
 
 module Database = struct
   type meta_data = {
@@ -456,13 +457,13 @@ module Web_service = struct
   (** Call the web service to get geolocation info *)
   let lookup config ip add_on lang =
     let code, json_string = call_geolocation_api config ip add_on lang in
-    let json = Yojson.Basic.from_string json_string in
+    let json = Basic.from_string json_string in
     (code, json)
   
   (** Call the web service to check the credit balance *)
   let get_credit config =
     let code, json_string = call_credit_api config in
-    let json = Yojson.Basic.from_string json_string in
+    let json = Basic.from_string json_string in
     (code, json)
   
 end
