@@ -15,7 +15,7 @@ depends: [
   "ocaml" {>= "4.08"}
   "dune" {>= "3.4"}
   "stdint"
-  "ipaddr"
+  "ipaddr" {>= "4.0.0"}
   "lwt"
   "cohttp"
   "cohttp-lwt-unix"

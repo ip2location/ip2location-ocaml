@@ -21,7 +21,7 @@
  (name ip2location)
  (synopsis "IP2Location OCaml module to get geolocation data")
  (description "IP2Location IP Geolocation OCaml module enables you to get your visitors' country, region, city, latitude, longitude, ZIP code, ISP, domain name, timezone, connection speed, IDD code, area code, weather station code, weather station name, MCC, MNC, mobile brand name, elevation, usage type, address type and IAB category based on IP address.")
- (depends (ocaml (>= "4.08")) dune stdint ipaddr lwt cohttp cohttp-lwt-unix (yojson (>= "1.6.0")))
+ (depends (ocaml (>= "4.08")) dune stdint (ipaddr (>= "4.0.0")) lwt cohttp cohttp-lwt-unix (yojson (>= "1.6.0")))
  (tags (ip2location geolocation)))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
