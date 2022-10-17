@@ -12,15 +12,14 @@ homepage: "https://github.com/ip2location/ip2location-ocaml"
 doc: "https://github.com/ip2location/ip2location-ocaml"
 bug-reports: "https://github.com/ip2location/ip2location-ocaml/issues"
 depends: [
-  "ocaml"
+  "ocaml" {>= "4.08"}
   "dune" {>= "3.4"}
   "stdint"
   "ipaddr"
   "lwt"
   "cohttp"
   "cohttp-lwt-unix"
-  "yojson"
-  ">=" {1.6.0}
+  "yojson" {>= "1.6.0"}
   "odoc" {with-doc}
 ]
 build: [
