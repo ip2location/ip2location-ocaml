@@ -37,3 +37,4 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/ip2location/ip2location-ocaml.git"
+available: arch != "arm32" & arch != "x86_32"
