@@ -44,12 +44,15 @@ module Database = struct
     elevation : float;
     usage_type : string;
     address_type : string;
-    category : string
+    category : string;
+    district : string;
+    asn : string;
+    asys : string
   }
 
   exception Ip2location_exception of string
 
-  let get_api_version = "8.0.0"
+  let get_api_version = "8.1.0"
 
   let load_mesg mesg =
     {
@@ -74,7 +77,10 @@ module Database = struct
       elevation = 0.;
       usage_type = mesg;
       address_type = mesg;
-      category = mesg
+      category = mesg;
+      district = mesg;
+      asn = mesg;
+      asys = mesg
     }
 
   let get_bytes inc pos len =
@@ -241,27 +247,30 @@ module Database = struct
   let close_db meta = close_in_noerr meta.fs
 
   let read_record meta row db_type =
-    let country_position = [|0; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2|] in
-    let region_position = [|0; 0; 0; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3|] in
-    let city_position = [|0; 0; 0; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4|] in
-    let isp_position = [|0; 0; 3; 0; 5; 0; 7; 5; 7; 0; 8; 0; 9; 0; 9; 0; 9; 0; 9; 7; 9; 0; 9; 7; 9; 9|] in
-    let latitude_position = [|0; 0; 0; 0; 0; 5; 5; 0; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5|] in
-    let longitude_position = [|0; 0; 0; 0; 0; 6; 6; 0; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6|] in
-    let domain_position = [|0; 0; 0; 0; 0; 0; 0; 6; 8; 0; 9; 0; 10;0; 10; 0; 10; 0; 10; 8; 10; 0; 10; 8; 10; 10|] in
-    let zip_code_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 7; 7; 7; 7; 0; 7; 7; 7; 0; 7; 0; 7; 7; 7; 0; 7; 7|] in
-    let time_zone_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 8; 8; 7; 8; 8; 8; 7; 8; 0; 8; 8; 8; 0; 8; 8|] in
-    let net_speed_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 8; 11;0; 11;8; 11; 0; 11; 0; 11; 0; 11; 11|] in
-    let idd_code_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 9; 12; 0; 12; 0; 12; 9; 12; 0; 12; 12|] in
-    let area_code_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 10 ;13 ;0; 13; 0; 13; 10; 13; 0; 13; 13|] in
-    let weather_station_code_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 9; 14; 0; 14; 0; 14; 0; 14; 14|] in
-    let weather_station_name_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 10; 15; 0; 15; 0; 15; 0; 15; 15|] in
-    let mcc_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 9; 16; 0; 16; 9; 16; 16|] in
-    let mnc_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 10;17; 0; 17; 10; 17; 17|] in
-    let mobile_brand_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 11;18; 0; 18; 11; 18; 18|] in
-    let elevation_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 11; 19; 0; 19; 19|] in
-    let usage_type_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 12; 20; 20|] in
-    let address_type_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 21|] in
-    let category_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 22|] in
+    let country_position = [|0; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2|] in
+    let region_position = [|0; 0; 0; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3; 3|] in
+    let city_position = [|0; 0; 0; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4; 4|] in
+    let isp_position = [|0; 0; 3; 0; 5; 0; 7; 5; 7; 0; 8; 0; 9; 0; 9; 0; 9; 0; 9; 7; 9; 0; 9; 7; 9; 9; 9|] in
+    let latitude_position = [|0; 0; 0; 0; 0; 5; 5; 0; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5|] in
+    let longitude_position = [|0; 0; 0; 0; 0; 6; 6; 0; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6; 6|] in
+    let domain_position = [|0; 0; 0; 0; 0; 0; 0; 6; 8; 0; 9; 0; 10;0; 10; 0; 10; 0; 10; 8; 10; 0; 10; 8; 10; 10; 10|] in
+    let zip_code_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 7; 7; 7; 7; 0; 7; 7; 7; 0; 7; 0; 7; 7; 7; 0; 7; 7; 7|] in
+    let time_zone_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 8; 8; 7; 8; 8; 8; 7; 8; 0; 8; 8; 8; 0; 8; 8; 8|] in
+    let net_speed_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 8; 11;0; 11;8; 11; 0; 11; 0; 11; 0; 11; 11; 11|] in
+    let idd_code_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 9; 12; 0; 12; 0; 12; 9; 12; 0; 12; 12; 12|] in
+    let area_code_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 10 ;13 ;0; 13; 0; 13; 10; 13; 0; 13; 13; 13|] in
+    let weather_station_code_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 9; 14; 0; 14; 0; 14; 0; 14; 14; 14|] in
+    let weather_station_name_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 10; 15; 0; 15; 0; 15; 0; 15; 15; 15|] in
+    let mcc_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 9; 16; 0; 16; 9; 16; 16; 16|] in
+    let mnc_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 10;17; 0; 17; 10; 17; 17; 17|] in
+    let mobile_brand_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 11;18; 0; 18; 11; 18; 18; 18|] in
+    let elevation_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 11; 19; 0; 19; 19; 19|] in
+    let usage_type_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 12; 20; 20; 20|] in
+    let address_type_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 21; 21|] in
+    let category_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 22; 22|] in
+    let district_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 23|] in
+    let asn_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 24|] in
+    let asys_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 25|] in
     
     let country_short, country_long = read_col_country_row meta row db_type country_position in
     let region = read_col_string_row meta row db_type region_position in
@@ -284,6 +293,9 @@ module Database = struct
     let usage_type = read_col_string_row meta row db_type usage_type_position in
     let address_type = read_col_string_row meta row db_type address_type_position in
     let category = read_col_string_row meta row db_type category_position in
+    let district = read_col_string_row meta row db_type district_position in
+    let asn = read_col_string_row meta row db_type asn_position in
+    let asys = read_col_string_row meta row db_type asys_position in
     
     {
       country_short = country_short;
@@ -307,7 +319,10 @@ module Database = struct
       elevation = elevation;
       usage_type = usage_type;
       address_type = address_type;
-      category = category
+      category = category;
+      district = district;
+      asn = asn;
+      asys = asys
     }
   
   let rec search_tree meta ip_num db_type low high base_addr col_size ip_type =

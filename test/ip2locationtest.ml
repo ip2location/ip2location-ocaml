@@ -29,6 +29,9 @@ printf "elevation: %f\n" res.elevation;;
 printf "usage_type: %s\n" res.usage_type;;
 printf "address_type: %s\n" res.address_type;;
 printf "category: %s\n" res.category;;
+printf "district: %s\n" res.district;;
+printf "asn: %s\n" res.asn;;
+printf "as: %s\n" res.asys;;
 
 Database.close_db meta;;
 

@@ -39,6 +39,9 @@ module Database :
       usage_type : string;
       address_type : string;
       category : string;
+      district : string;
+      asn : string;
+      asys : string;
     }
     exception Ip2location_exception of string
     val get_api_version : string

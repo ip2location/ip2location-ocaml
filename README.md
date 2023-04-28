@@ -1,6 +1,6 @@
 # IP2Location OCaml Module
 
-This OCaml module provides a fast lookup of country, region, city, latitude, longitude, ZIP code, time zone, ISP, domain name, connection type, IDD code, area code, weather station code, station name, mcc, mnc, mobile brand, elevation, usage type, address type and IAB category from IP address by using IP2Location database. This module uses a file based database available at IP2Location.com. This database simply contains IP blocks as keys, and other information such as country, region, city, latitude, longitude, ZIP code, time zone, ISP, domain name, connection type, IDD code, area code, weather station code, station name, mcc, mnc, mobile brand, elevation, usage type, address type and IAB category as values. It supports both IP address in IPv4 and IPv6.
+This OCaml module provides a fast lookup of country, region, city, latitude, longitude, ZIP code, time zone, ISP, domain name, connection type, IDD code, area code, weather station code, station name, mcc, mnc, mobile brand, elevation, usage type, address type, IAB category, district, autonomous system number (ASN) and autonomous system (AS) from IP address by using IP2Location database. This module uses a file based database available at IP2Location.com. This database simply contains IP blocks as keys, and other information such as country, region, city, latitude, longitude, ZIP code, time zone, ISP, domain name, connection type, IDD code, area code, weather station code, station name, mcc, mnc, mobile brand, elevation, usage type, address type, IAB category, district, autonomous system number (ASN) and autonomous system (AS) as values. It supports both IP address in IPv4 and IPv6.
 
 This module can be used in many types of projects such as:
 
@@ -86,6 +86,9 @@ printf "elevation: %f\n" res.elevation;;
 printf "usage_type: %s\n" res.usage_type;;
 printf "address_type: %s\n" res.address_type;;
 printf "category: %s\n" res.category;;
+printf "district: %s\n" res.district;;
+printf "asn: %s\n" res.asn;;
+printf "as: %s\n" res.asys;;
 
 Database.close_db meta;;
 
