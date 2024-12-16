@@ -52,7 +52,7 @@ module Database = struct
 
   exception Ip2location_exception of string
 
-  let get_api_version = "8.1.0"
+  let get_api_version = "8.1.1"
 
   let load_mesg mesg =
     {
@@ -87,7 +87,7 @@ module Database = struct
     try
       seek_in inc pos;
       let res = Bytes.create len in
-      really_input inc res 0 len;
+      let _ = input inc res 0 len in
       res
     with e ->
       raise e
@@ -329,6 +329,7 @@ module Database = struct
     if low <= high
     then
       let mid = Uint32.shift_right_logical (Uint32.add low high) 1 in
+      (* ignore (Printf.printf "DEBUG  ----  %s\t%s\t%s\n%!" (Uint32.to_string low) (Uint32.to_string mid) (Uint32.to_string high)); (* %! to flush buffer *) *)
       let row_offset = Uint32.add base_addr (Uint32.mul mid col_size) in
       
       let first_col = Uint32.of_int (if ip_type == 4 then 4 else 16) in
@@ -355,27 +356,32 @@ module Database = struct
       load_mesg "IP address not found."
   
   let search_4 meta ip_num =
+    (* ignore (Printf.printf "DEBUG  ----  %s\n%!" (Uint128.to_string ip_num)); (* %! to flush buffer *) *)
+    let max4 = Uint128.of_string "4294967295" in
+    let ip_num2 = if (Uint128.compare ip_num max4) == 0 then (Uint128.pred ip_num) else ip_num in
     if meta.ipv4_index_base_addr > Uint32.zero
     then
-      let index_pos = Uint32.to_int (Uint32.add (Uint128.to_uint32 (Uint128.shift_left (Uint128.shift_right_logical ip_num 16) 3)) meta.ipv4_index_base_addr) in
+      let index_pos = Uint32.to_int (Uint32.add (Uint128.to_uint32 (Uint128.shift_left (Uint128.shift_right_logical ip_num2 16) 3)) meta.ipv4_index_base_addr) in
       let row = get_bytes meta.fs (index_pos - 1) 8 in (* 4 bytes for each IP From & IP To *)
       let low = read_uint32_row row 0 in
       let high = read_uint32_row row 4 in
-      search_tree meta ip_num meta.db_type low high meta.ipv4_base_addr meta.ipv4_column_size 4
+      search_tree meta ip_num2 meta.db_type low high meta.ipv4_base_addr meta.ipv4_column_size 4
     else
-      search_tree meta ip_num meta.db_type Uint32.zero meta.ipv4_db_count meta.ipv4_base_addr meta.ipv4_column_size 4
+      search_tree meta ip_num2 meta.db_type Uint32.zero meta.ipv4_db_count meta.ipv4_base_addr meta.ipv4_column_size 4
   
   let search_6 meta ip_num =
+    let max6 = Uint128.of_string "340282366920938463463374607431768211455" in
+    let ip_num2 = if (Uint128.compare ip_num max6) == 0 then (Uint128.pred ip_num) else ip_num in
     if meta.ipv6_index_base_addr > Uint32.zero
     then
-      let index_pos = Uint32.to_int (Uint32.add (Uint128.to_uint32 (Uint128.shift_left (Uint128.shift_right_logical ip_num 112) 3)) meta.ipv6_index_base_addr) in
+      let index_pos = Uint32.to_int (Uint32.add (Uint128.to_uint32 (Uint128.shift_left (Uint128.shift_right_logical ip_num2 112) 3)) meta.ipv6_index_base_addr) in
       let row = get_bytes meta.fs (index_pos - 1) 8 in (* 4 bytes for each IP From & IP To *)
       let low = read_uint32_row row 0 in
       let high = read_uint32_row row 4 in
       
-      search_tree meta ip_num meta.db_type low high meta.ipv6_base_addr meta.ipv6_column_size 6
+      search_tree meta ip_num2 meta.db_type low high meta.ipv6_base_addr meta.ipv6_column_size 6
     else
-      search_tree meta ip_num meta.db_type Uint32.zero meta.ipv6_db_count meta.ipv6_base_addr meta.ipv6_column_size 6
+      search_tree meta ip_num2 meta.db_type Uint32.zero meta.ipv6_db_count meta.ipv6_base_addr meta.ipv6_column_size 6
   
   (** Query geolocation data for IP address *)
   let query meta ip =
@@ -388,13 +394,16 @@ module Database = struct
       let to_teredo = Uint128.of_string "42540488241204005274814694018844196863" in
       let last_32_bits = Uint128.of_string "4294967295" in
       
+      (* Printexc.record_backtrace true; *)
       try
-   	    let x = Ipaddr.V4.of_string_exn ip in
+        let x = Ipaddr.V4.of_string_exn ip in
         let ip_num = Uint32.to_uint128 (Uint32.of_bytes_big_endian (Bytes.of_string (Ipaddr.V4.to_octets x)) 0) in (* big endian because is network byte order *)
         search_4 meta ip_num
       with _ ->
+        (* let msg = Printexc.to_string e and stack = Printexc.get_backtrace () in *)
+        (* ignore (Printf.printf "ERROR  ----  %s\n%s\n%!" msg stack); (* %! to flush buffer *) *)
         try
-   	      let x = Ipaddr.V6.of_string_exn ip in
+          let x = Ipaddr.V6.of_string_exn ip in
           let ip_num = Uint128.of_bytes_big_endian (Bytes.of_string (Ipaddr.V6.to_octets x)) 0 in (* big endian because is network byte order *)
           if ip_num >= from_v4_mapped && ip_num <= to_v4_mapped
           then
@@ -405,8 +414,11 @@ module Database = struct
           else if ip_num >= from_teredo && ip_num <= to_teredo
           then
             search_4 meta (Uint128.logand (Uint128.lognot ip_num) last_32_bits)
-          else
+          else if meta.ipv6_db_count > (Uint32.of_int 0)
+          then
             search_6 meta ip_num
+          else
+            load_mesg "IPv6 address missing in IPv4 BIN."
         with _ ->
           load_mesg "Invalid IP address."
     end

@@ -2,7 +2,7 @@
 
 (name ip2location)
 
-(version 8.1.0)
+(version 8.1.1)
 
 (generate_opam_files true)
 

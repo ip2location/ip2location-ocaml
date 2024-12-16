@@ -2,36 +2,43 @@ open Printf
 open Ip2location
 
 (* query IP2Location BIN datababase *)
-let meta = Database.open_db "./IP2LOCATION-LITE-DB1.IPV6.BIN";;
+(* let meta = Database.open_db "./IP2LOCATION-LITE-DB1.IPV6.BIN";; *)
 
-let ip = "2a02:3037:0400:6fa2:459c:84b6:967d:69e0";;
-let res = Database.query meta ip;;
+let meta = Database.open_db "./IP2LOCATION-LITE-ASN.IPV6.BIN";;
 
-printf "country_short: %s\n" res.country_short;;
-printf "country_long: %s\n" res.country_long;;
-printf "region: %s\n" res.region;;
-printf "city: %s\n" res.city;;
-printf "isp: %s\n" res.isp;;
-printf "latitude: %f\n" res.latitude;;
-printf "longitude: %f\n" res.longitude;;
-printf "domain: %s\n" res.domain;;
-printf "zip_code: %s\n" res.zip_code;;
-printf "time_zone: %s\n" res.time_zone;;
-printf "net_speed: %s\n" res.net_speed;;
-printf "idd_code: %s\n" res.idd_code;;
-printf "area_code: %s\n" res.area_code;;
-printf "weather_station_code: %s\n" res.weather_station_code;;
-printf "weather_station_name: %s\n" res.weather_station_name;;
-printf "mcc: %s\n" res.mcc;;
-printf "mnc: %s\n" res.mnc;;
-printf "mobile_brand: %s\n" res.mobile_brand;;
-printf "elevation: %f\n" res.elevation;;
-printf "usage_type: %s\n" res.usage_type;;
-printf "address_type: %s\n" res.address_type;;
-printf "category: %s\n" res.category;;
-printf "district: %s\n" res.district;;
-printf "asn: %s\n" res.asn;;
-printf "as: %s\n" res.asys;;
+let mylist = ["0.0.0.0"; "8.3.34.0"; "8.8.8.8"; "3.91.171.8"; "37.252.228.50"; "64.94.62.0"; "197.85.191.64"; "255.255.255.254"; "255.255.255.255"; "179.125.12.0"; "::"; "2001::"; "2001:0:4136:e378:8000:63bf:f7f7:f7f7"; "2001:0000:4136:e378:8000:63bf:f7fc:ddff"; "2002::"; "2002:808:808::"; "2002:0803:2200::0803:2200"; "2600:1F18:45B0:5B00:0000:0000:0000:0000"; "::FFFF:FFFF"; "::FFFF:3.91.171.8"; "::FFFF:8.3.34.0"; "::FFFF:64.94.62.0"; "::FFFF:C555:BF40"; "ffff:ffff:ffff:ffff:FFFF:FFFF:FFFF:FFFE"; "FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF"; "0:0:0:0:0:ffff:b37d:0c00"; "0.0.0.256"; "0.0.0"; "1"; "A"];;
+
+let getloc ip =
+	let res = Database.query meta ip in
+	printf "IP: %s\n" ip;
+	printf "country_short: %s\n" res.country_short;
+	printf "country_long: %s\n" res.country_long;
+	printf "region: %s\n" res.region;
+	printf "city: %s\n" res.city;
+	printf "isp: %s\n" res.isp;
+	printf "latitude: %f\n" res.latitude;
+	printf "longitude: %f\n" res.longitude;
+	printf "domain: %s\n" res.domain;
+	printf "zip_code: %s\n" res.zip_code;
+	printf "time_zone: %s\n" res.time_zone;
+	printf "net_speed: %s\n" res.net_speed;
+	printf "idd_code: %s\n" res.idd_code;
+	printf "area_code: %s\n" res.area_code;
+	printf "weather_station_code: %s\n" res.weather_station_code;
+	printf "weather_station_name: %s\n" res.weather_station_name;
+	printf "mcc: %s\n" res.mcc;
+	printf "mnc: %s\n" res.mnc;
+	printf "mobile_brand: %s\n" res.mobile_brand;
+	printf "elevation: %f\n" res.elevation;
+	printf "usage_type: %s\n" res.usage_type;
+	printf "address_type: %s\n" res.address_type;
+	printf "category: %s\n" res.category;
+	printf "district: %s\n" res.district;
+	printf "asn: %s\n" res.asn;
+	printf "as: %s\n" res.asys;
+	printf "=======================================================================\n";;
+
+List.iter getloc mylist;;
 
 Database.close_db meta;;
 
