@@ -2,9 +2,7 @@ open Printf
 open Ip2location
 
 (* query IP2Location BIN datababase *)
-(* let meta = Database.open_db "./IP2LOCATION-LITE-DB1.IPV6.BIN";; *)
-
-let meta = Database.open_db "./IP2LOCATION-LITE-ASN.IPV6.BIN";;
+let meta = Database.open_db "./IP2LOCATION-LITE-DB1.IPV6.BIN";;
 
 let mylist = ["0.0.0.0"; "8.3.34.0"; "8.8.8.8"; "3.91.171.8"; "37.252.228.50"; "64.94.62.0"; "197.85.191.64"; "255.255.255.254"; "255.255.255.255"; "179.125.12.0"; "::"; "2001::"; "2001:0:4136:e378:8000:63bf:f7f7:f7f7"; "2001:0000:4136:e378:8000:63bf:f7fc:ddff"; "2002::"; "2002:808:808::"; "2002:0803:2200::0803:2200"; "2600:1F18:45B0:5B00:0000:0000:0000:0000"; "::FFFF:FFFF"; "::FFFF:3.91.171.8"; "::FFFF:8.3.34.0"; "::FFFF:64.94.62.0"; "::FFFF:C555:BF40"; "ffff:ffff:ffff:ffff:FFFF:FFFF:FFFF:FFFE"; "FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF"; "0:0:0:0:0:ffff:b37d:0c00"; "0.0.0.256"; "0.0.0"; "1"; "A"];;
 
