@@ -42,6 +42,9 @@ module Database :
       district : string;
       asn : string;
       asys : string;
+      as_domain : string;
+      as_usage_type : string;
+      as_cidr : string;
     }
     exception Ip2location_exception of string
     val get_api_version : string

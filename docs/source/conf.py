@@ -9,8 +9,8 @@ project = 'IP2Location OCaml'
 copyright = '2025, IP2Location'
 author = 'IP2Location'
 
-release = '1.0.0'
-version = '1.0.0'
+release = '8.2.0'
+version = '8.2.0'
 
 # -- General configuration
 
@@ -61,4 +61,4 @@ html_favicon = 'images/favicon.ico'
 
 html_title = "IP2Location OCaml"
 
-# html_baseurl = "https://ip2location-deno.readthedocs.io/en/latest/"
+# html_baseurl = "https://ip2location-ocaml.readthedocs.io/en/latest/"

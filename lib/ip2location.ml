@@ -47,12 +47,15 @@ module Database = struct
     category : string;
     district : string;
     asn : string;
-    asys : string
+    asys : string;
+    as_domain : string;
+    as_usage_type : string;
+    as_cidr : string
   }
 
   exception Ip2location_exception of string
 
-  let get_api_version = "8.1.1"
+  let get_api_version = "8.2.0"
 
   let load_mesg mesg =
     {
@@ -80,7 +83,10 @@ module Database = struct
       category = mesg;
       district = mesg;
       asn = mesg;
-      asys = mesg
+      asys = mesg;
+      as_domain = mesg;
+      as_usage_type = mesg;
+      as_cidr = mesg
     }
 
   let get_bytes inc pos len =
@@ -271,6 +277,9 @@ module Database = struct
     let district_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 23|] in
     let asn_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 24|] in
     let asys_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 25|] in
+    let as_domain_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 26|] in
+    let as_usage_type_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 27|] in
+    let as_cidr_position = [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 28|] in
     
     let country_short, country_long = read_col_country_row meta row db_type country_position in
     let region = read_col_string_row meta row db_type region_position in
@@ -296,6 +305,9 @@ module Database = struct
     let district = read_col_string_row meta row db_type district_position in
     let asn = read_col_string_row meta row db_type asn_position in
     let asys = read_col_string_row meta row db_type asys_position in
+    let as_domain = read_col_string_row meta row db_type as_domain_position in
+    let as_usage_type = read_col_string_row meta row db_type as_usage_type_position in
+    let as_cidr = read_col_string_row meta row db_type as_cidr_position in
     
     {
       country_short = country_short;
@@ -322,7 +334,10 @@ module Database = struct
       category = category;
       district = district;
       asn = asn;
-      asys = asys
+      asys = asys;
+      as_domain = as_domain;
+      as_usage_type = as_usage_type;
+      as_cidr = as_cidr
     }
   
   let rec search_tree meta ip_num db_type low high base_addr col_size ip_type =

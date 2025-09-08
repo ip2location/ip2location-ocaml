@@ -2,7 +2,7 @@
 
 (name ip2location)
 
-(version 8.1.1)
+(version 8.2.0)
 
 (generate_opam_files true)
 
@@ -20,7 +20,7 @@
 (package
  (name ip2location)
  (synopsis "IP2Location OCaml module to get geolocation data")
- (description "IP2Location IP Geolocation OCaml module enables you to get your visitors' country, region, city, latitude, longitude, ZIP code, ISP, domain name, timezone, connection speed, IDD code, area code, weather station code, weather station name, MCC, MNC, mobile brand name, elevation, usage type, address type, IAB category, district, autonomous system number (ASN) and autonomous system (AS) based on IP address.")
+ (description "IP2Location IP Geolocation OCaml module enables you to get your visitors' country, region, city, latitude, longitude, ZIP code, ISP, domain name, timezone, connection speed, IDD code, area code, weather station code, weather station name, MCC, MNC, mobile brand name, elevation, usage type, address type, IAB category, district, autonomous system number (ASN), autonomous system (AS), AS domain, AS usage type and AS CIDR based on IP address.")
  (depends (ocaml (>= "4.08")) dune stdint (ipaddr (>= "4.0.0")) lwt cohttp cohttp-lwt-unix (yojson (>= "1.6.0")))
  (tags (ip2location geolocation)))
 

@@ -55,6 +55,9 @@ printf "category: %s\n" res.category;;
 printf "district: %s\n" res.district;;
 printf "asn: %s\n" res.asn;;
 printf "as: %s\n" res.asys;;
+printf "as_domain: %s\n" res.as_domain;;
+printf "as_usage_type: %s\n" res.as_usage_type;;
+printf "as_cidr: %s\n" res.as_cidr;;
 
 Database.close_db meta;;
 ```
