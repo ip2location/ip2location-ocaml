@@ -4,9 +4,9 @@
 
 This module requires IP2Location BIN data file to function. You may download the BIN data file at
 
--   IP2Location LITE BIN Data (Free): <https://lite.ip2location.com>
--   IP2Location Commercial BIN Data (Comprehensive):
-    <https://www.ip2location.com>
+- IP2Location LITE BIN Data (Free): <https://lite.ip2location.com>
+- IP2Location Commercial BIN Data (Comprehensive):
+  <https://www.ip2location.com>
 
 ## Compilation
 
@@ -61,4 +61,3 @@ printf "as_cidr: %s\n" res.as_cidr;;
 
 Database.close_db meta;;
 ```
-

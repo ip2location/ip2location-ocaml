@@ -9,17 +9,16 @@ authors: ["IP2Location.com"]
 license: "MIT"
 tags: ["ip2location" "geolocation"]
 homepage: "https://github.com/ip2location/ip2location-ocaml"
-doc: "https://github.com/ip2location/ip2location-ocaml"
 bug-reports: "https://github.com/ip2location/ip2location-ocaml/issues"
 depends: [
+  "dune" {>= "3.20"}
   "ocaml" {>= "4.08"}
-  "dune" {>= "3.4"}
   "stdint"
-  "ipaddr" {>= "4.0.0"}
+  "ipaddr" {>= "4.0"}
   "lwt"
   "cohttp"
   "cohttp-lwt-unix"
-  "yojson" {>= "1.6.0"}
+  "yojson" {>= "1.6"}
   "odoc" {with-doc}
 ]
 build: [
@@ -37,4 +36,5 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/ip2location/ip2location-ocaml.git"
+x-maintenance-intent: ["(latest)"]
 available: arch != "arm32" & arch != "x86_32"
