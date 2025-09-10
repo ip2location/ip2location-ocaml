@@ -5,20 +5,20 @@
 
 # -- Project information
 
-project = 'IP2Location OCaml'
-copyright = '2025, IP2Location'
-author = 'IP2Location'
+project = "IP2Location OCaml"
+copyright = "2025, IP2Location"
+author = "IP2Location"
 
-release = '8.2.0'
-version = '8.2.0'
+release = "8.2.0"
+version = "8.2.0"
 
 # -- General configuration
 
 extensions = [
-    'sphinx.ext.duration',
-    'sphinx.ext.doctest',
-    'myst_parser',
-    'sphinx_copybutton',
+    "sphinx.ext.duration",
+    "sphinx.ext.doctest",
+    "myst_parser",
+    "sphinx_copybutton",
 ]
 
 # https://myst-parser.readthedocs.io/en/latest/syntax/optional.html
@@ -40,7 +40,7 @@ myst_html_meta = {
 
 # -- Options for HTML output
 
-html_theme = 'sphinx_book_theme'
+html_theme = "sphinx_book_theme"
 # html_theme_path = [sphinx_pdj_theme.get_html_theme_path()]
 
 # PDJ theme options, see the list of available options here: https://github.com/jucacrispim/sphinx_pdj_theme/blob/master/sphinx_pdj_theme/theme.conf
@@ -54,10 +54,10 @@ html_theme_options = {
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = 'images/ipl-logo-square-1200.png'
+html_logo = "images/ipl-logo-square-1200.png"
 
 # Favicon
-html_favicon = 'images/favicon.ico'
+html_favicon = "images/favicon.ico"
 
 html_title = "IP2Location OCaml"
 
